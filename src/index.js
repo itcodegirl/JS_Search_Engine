@@ -1,3 +1,4 @@
+//require('dotenv').config();
 function search(event) {
   event.preventDefault();
   let searchInputElement = document.querySelector("#search-input");
@@ -39,3 +40,17 @@ let currentDateELement = document.querySelector("#current-date");
 let currentDate = new Date();
 
 currentDateELement.innerHTML = formatDate(currentDate);
+
+
+searchForm.addEventListener("submit", function (event) {
+  event.preventDefault();
+  let city = document.querySelector("#search-input").value;
+  axios.get(`http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=apiKey`)
+    .then(response => {
+      let cityName = response.data.main.temp;
+      let temperature = response.data.main.temp;
+      document.querySelector("city-name").textContent = cityName;
+      document.querySelector("temperature").textContent = temperature;
+    })
+    .catch(error => console.error('Error:', error));
+});
