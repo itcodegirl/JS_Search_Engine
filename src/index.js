@@ -1,15 +1,23 @@
-//require('dotenv').config();
-let apiKey = 'd9126eda46b6755db8578eaa14ec0ba3';
-let apiUrl = 'https://api.openweathermap.org/data/3.0/onecall/timemachine?query=${city}&appid=${apiKey}&units=metrics';
+function showWeather(response) {
+  let temperatureElement = document.querySelector("#current-temperature-value");
+  let temperature = Math.round(response.data.temperature.current);
+  let cityElement = document.querySelector("#current-city");
+  cityElement.innerHTML = response.data.city;
+  temperatureElement.innerHTML = temperature;
+}
 function search(event) {
   event.preventDefault();
   let searchInputElement = document.querySelector("#search-input");
-  let cityElement = document.querySelector("#current-city");
-  let city = searchInputElement.value
-  cityElement.innerHTML = searchInputElement.value;
+
+  let city = searchInputElement.value;
+  let apiKey = "98f12063t8f0b4be43fb6oa12441998c";
+  let apiUrl = `https://api.shecodes.io/weather/v1/current?query=${city}&key=${apiKey}&units=imperial`;
+  axios.get(apiUrl).then(showWeather);
 }
 
-console.log = (apiUrl);
+let searchForm = document.querySelector("#search-form");
+
+searchForm.addEventListener("submit", search);
 
 function formatDate(date) {
   let minutes = date.getMinutes();
@@ -31,31 +39,12 @@ function formatDate(date) {
     "Wednesday",
     "Thursday",
     "Friday",
-    "Saturday"
+    "Saturday",
   ];
-
   let formattedDay = days[day];
   return `${formattedDay} ${hours}:${minutes}`;
 }
 
-let searchForm = document.querySelector("#search-form");
-searchForm.addEventListener("submit", search);
-
 let currentDateELement = document.querySelector("#current-date");
 let currentDate = new Date();
-
 currentDateELement.innerHTML = formatDate(currentDate);
-
-
-searchForm.addEventListener("submit", function (event) {
-  event.preventDefault();
-  let city = document.querySelector("#search-input").value;
-  axios.get(`http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=apiKey`)
-    .then(response => {
-      let cityName = response.data.main.temp;
-      let temperature = response.data.main.temp;
-      document.querySelector("city-name").textContent = cityName;
-      document.querySelector("temperature").textContent = temperature;
-    })
-    .catch(error => console.error('Error:', error));
-});
