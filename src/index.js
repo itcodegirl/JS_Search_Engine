@@ -1,10 +1,15 @@
 //require('dotenv').config();
+let apiKey = 'd9126eda46b6755db8578eaa14ec0ba3';
+let apiUrl = 'https://api.openweathermap.org/data/3.0/onecall/timemachine?query=${city}&appid=${apiKey}&units=metrics';
 function search(event) {
   event.preventDefault();
   let searchInputElement = document.querySelector("#search-input");
   let cityElement = document.querySelector("#current-city");
+  let city = searchInputElement.value
   cityElement.innerHTML = searchInputElement.value;
 }
+
+console.log = (apiUrl);
 
 function formatDate(date) {
   let minutes = date.getMinutes();
